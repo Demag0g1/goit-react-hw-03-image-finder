@@ -1,3 +1,8 @@
+import { Component } from "react";
+import { ReactDOM } from "react";
+import { Triangle } from  'react-loader-spinner'
+import Modal from 'react-modal';
+
 export const App = () => {
   return (
     <div
