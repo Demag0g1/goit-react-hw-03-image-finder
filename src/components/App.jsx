@@ -1,21 +1,16 @@
-import { Component } from "react";
-import { ReactDOM } from "react";
-import { Triangle } from  'react-loader-spinner'
-import Modal from 'react-modal';
+import React from 'react';
+import SearchBar from './searchBar/SearchBar';
+// import ImageGallery from './imageGallery/ImageGallery';
+import ImageGalleryItem from './imageGalleryItem/ImageGalleryItem';
 
-export const App = () => {
+
+const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
+    <div>
+     <SearchBar />
+     <ImageGalleryItem />
     </div>
   );
 };
+
+export default App;
