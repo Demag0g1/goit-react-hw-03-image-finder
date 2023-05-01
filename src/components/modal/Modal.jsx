@@ -1,63 +1,26 @@
 import React from 'react';
 import styles from './Modal.module.css';
-import {selectedImage,imageUrl } from '../imageGallery/ImageGallery';
+import ReactModal from 'react-modal';
+import PropTypes from 'prop-types';
 
-
-const Modal = ({ selectedImage,isOpen, onClose, imageUrl }) => {
-  if (!isOpen) {
-    return null;
-  }
-
+const Modal = ({ selectedImage, isOpen, onClose, imageUrl }) => {
   return (
-    <div className={styles.Overlay} onClick={onClose} style={customStyles}>
-      <div className={styles.Modal}>
-      <img src={selectedImage.imageUrl} alt={selectedImage.tags} />
-      </div>
-    </div>
+    <ReactModal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      overlayClassName={styles.Overlay}
+      className={styles.Modal}
+    >
+      <img src={imageUrl} alt={selectedImage.tags} />
+    </ReactModal>
   );
 };
 
-export default Modal;
-
-
-
-// let ModWin = () => {
-//   const [modalIsOpen, setIsOpen] = React.useState(false);
-
-//   function openModal() {
-//     setIsOpen(true);
-//   }
-
-//   function closeModal() {
-//     setIsOpen(false);
-//   }
-
-//   return (
-//     <div>
-//       <button onClick={openModal}></button>
-//       <Modal
-//         isOpen={modalIsOpen}
-//         onRequestClose={closeModal}
-//         style={customStyles}
-//         contentLabel="Example Modal"
-//       >
-//         <button onClick={closeModal}>close</button>
-//       </Modal>
-//     </div>
-//   );
-// };
-// export default ModWin;
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
+Modal.propTypes = {
+  selectedImage: PropTypes.object,
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  imageUrl: PropTypes.string
 };
 
-
-
+export default Modal;

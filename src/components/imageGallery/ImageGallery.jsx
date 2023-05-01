@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
 import styles from './ImageGallery.module.css';
 import Modal from 'react-modal';
-import ImageGalleryItem from 'components/imageGalleryItem/ImageGalleryItem';
+import ImageGalleryItem from '../imageGalleryItem/ImageGalleryItem';
+import PropTypes from 'prop-types';
 
 class ImageGallery extends Component {
   state = {
     isOpen: false,
-    selectedImage: null
+    selectedImage: null,
   };
 
-  openModal = (image) => {
+  openModal = image => {
     this.setState({
       isOpen: true,
-      selectedImage: image
+      selectedImage: image,
     });
-  }
+  };
 
   closeModal = () => {
     this.setState({
       isOpen: false,
-      selectedImage: null
+      selectedImage: null,
     });
-  }
+  };
 
   render() {
     const { images } = this.props;
@@ -38,7 +39,12 @@ class ImageGallery extends Component {
             />
           ))}
         </ul>
-        <Modal isOpen={isOpen} onRequestClose={this.closeModal}>
+        <Modal
+          isOpen={isOpen}
+          onRequestClose={this.closeModal}
+          className={styles.modal}
+          overlayClassName={styles.Overlay}
+        >
           {selectedImage && (
             <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
           )}
@@ -48,5 +54,15 @@ class ImageGallery extends Component {
   }
 }
 
-export default ImageGallery;
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
+export default ImageGallery;
