@@ -10,11 +10,13 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1200;
+
 }
 
 .Modal {
-  max-width: calc(100vw - 68px);
-  max-height: calc(100vh - 48px);
+  padding: 40px;
+  max-width: calc(80vw - 68px);
+  max-height: calc(80vh - 48px);
 }
 
 
