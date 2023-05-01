@@ -59,7 +59,7 @@ class SearchBar extends Component {
             style={{
               display: 'flex',
               justifyContent: 'center',
-              marginTop: '350px',
+              marginTop: 'calc(100vw - 200px)',
             }}
           >
             <Blocks
