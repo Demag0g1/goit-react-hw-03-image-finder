@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import ImageGallery from '../imageGallery/ImageGallery';
-import { Blocks } from 'react-loader-spinner';
+import Loader from '../loader/Loader';
 import styles from './SearchBar.module.css';
+import Button from '../button/Button';
 
 class SearchBar extends Component {
   state = {
@@ -13,6 +14,7 @@ class SearchBar extends Component {
     apiKey: '35920298-91199a46b82f570ed53995cb2',
     images: [],
     isLoading: false,
+    page: 1,
   };
 
   onInputChange = e => {
@@ -21,21 +23,28 @@ class SearchBar extends Component {
 
   onFormSubmit = e => {
     e.preventDefault();
-    const { inputText, amount, apiURL, apiKey } = this.state;
+    const { inputText, amount, apiURL, apiKey, page } = this.state;
+    const nextPage = page + 1;
     this.setState({ isLoading: true });
-
+  
     axios
       .get(
-        `${apiURL}/?q=${inputText}&page=1&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=${amount}&safesearch=true`
+        `${apiURL}/?q=${inputText}&page=${nextPage}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=${amount}&safesearch=true`
       )
       .then(res => {
-        this.setState({ images: res.data.hits, isLoading: false });
+        const newImages = res.data.hits;
+        this.setState(prevState => ({
+          images: [...prevState.images, ...newImages],
+          isLoading: false,
+          page: nextPage,
+        }));
       })
       .catch(err => console.log(err));
   };
+  
 
   render() {
-    const { inputText, images, isLoading } = this.state;
+    const { inputText, images, isLoading, page } = this.state;
 
     return (
       <>
@@ -56,23 +65,14 @@ class SearchBar extends Component {
           </form>
         </header>
         {isLoading ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: 'calc(100vw - 200px)',
-            }}
-          >
-            <Blocks
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="blocks-loading"
-              wrapperClass="blocks-wrapper"
-            />
-          </div>
+          <Loader />
         ) : (
-          <ImageGallery images={images} />
+          <>
+            <ImageGallery images={images} />
+            <Button onClick={this.onFormSubmit} shouldShow={page > 1}>
+              Load more...
+            </Button>
+          </>
         )}
       </>
     );
@@ -84,6 +84,7 @@ SearchBar.propTypes = {
   amount: PropTypes.number,
   apiURL: PropTypes.string,
   apiKey: PropTypes.string,
+  page: PropTypes.number,
   images: PropTypes.arrayOf(PropTypes.object),
   isLoading: PropTypes.bool,
 };

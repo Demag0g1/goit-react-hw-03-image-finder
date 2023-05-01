@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './ImageGallery.module.css';
-import Modal from 'react-modal';
+import Modal from '../modal/Modal';
 import ImageGalleryItem from '../imageGalleryItem/ImageGalleryItem';
 import PropTypes from 'prop-types';
 
@@ -10,23 +10,9 @@ class ImageGallery extends Component {
     selectedImage: null,
   };
 
-  openModal = image => {
-    this.setState({
-      isOpen: true,
-      selectedImage: image,
-    });
-  };
-
-  closeModal = () => {
-    this.setState({
-      isOpen: false,
-      selectedImage: null,
-    });
-  };
-
   render() {
     const { images } = this.props;
-    const { isOpen, selectedImage } = this.state;
+    const { selectedImage, isOpen } = this.state;
 
     return (
       <>
@@ -42,16 +28,25 @@ class ImageGallery extends Component {
         <Modal
           isOpen={isOpen}
           onRequestClose={this.closeModal}
-          className={styles.modal}
-          overlayClassName={styles.Overlay}
-        >
-          {selectedImage && (
-            <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
-          )}
-        </Modal>
+          selectedImage={selectedImage}
+        />
       </>
     );
   }
+
+  openModal = image => {
+    this.setState({
+      isOpen: true,
+      selectedImage: image,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      isOpen: false,
+      selectedImage: null,
+    });
+  };
 }
 
 ImageGallery.propTypes = {
