@@ -14,18 +14,18 @@ class SearchBar extends Component {
     apiKey: '35920298-91199a46b82f570ed53995cb2',
     images: [],
     isLoading: false,
-    page: 1,
+    page:0 ,
   };
-
+allImages=[];
   onInputChange = e => {
-    this.setState({ inputText: e.target.value });
+    this.setState({ inputText: e.target.value ,images: [],page:0});
   };
 
   onFormSubmit = e => {
     e.preventDefault();
     const { inputText, amount, apiURL, apiKey, page } = this.state;
     const nextPage = page + 1;
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true,  });
   
     axios
       .get(
@@ -44,7 +44,7 @@ class SearchBar extends Component {
   
 
   render() {
-    const { inputText, images, isLoading, page } = this.state;
+    const { inputText, images, isLoading, } = this.state;
 
     return (
       <>
@@ -69,7 +69,7 @@ class SearchBar extends Component {
         ) : (
           <>
             <ImageGallery images={images} />
-            <Button onClick={this.onFormSubmit} shouldShow={page > 1}>
+            <Button onClick={this.onFormSubmit} shouldShow={images.length >0}>
               Load more...
             </Button>
           </>
